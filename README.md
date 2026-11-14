@@ -22,7 +22,7 @@ I used `train.csv` (381,109 rows) from the [Health Insurance Cross Sell Predicti
 
 1. **Explore the data with Python** (`data.ipynb`): download the data from Kaggle. Check the columns, duplicate rows, categories and value ranges. Clean the column names and fix the data types of region code and sales channel code.
 2. **Analyze with PostgreSQL** (`sql.sql`): load `train.csv` into a table named `data`. Create `age_band` and `vintage_band`. Compare customer counts and response rates across groups. Sales channels are ranked by response rate only if they have at least 500 customers.
-3. **Present with Power BI** (`Dashborad.pbix`): a dashboard with 3 pages (Overview, Customer Segment and Cross-sell Targeting). It has filters and a suggested group for a test campaign.
+3. **Present with Power BI** (`Dashboard.pbix`): a dashboard with 3 pages (Overview, Customer Segment and Cross-sell Targeting). It has filters and a suggested group for a test campaign.
 
 ## Findings
 
@@ -40,7 +40,7 @@ Within this group, sales channel 26 has 3,716 customers and 1,615 interested one
 
 - `data.ipynb`: load and explore the data
 - `sql.sql`: create groups and answer the business questions
-- `Dashborad.pbix`: interactive Power BI dashboard
+- `Dashboard.pbix`: interactive Power BI dashboard
 
 ## Limits
 
