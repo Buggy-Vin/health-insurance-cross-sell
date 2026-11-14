@@ -1,47 +1,47 @@
-# วิเคราะห์การตอบรับข้อเสนอประกันรถยนต์จากฐานลูกค้าประกันสุขภาพ
+# Which health insurance customers want car insurance?
 
-โปรเจกต์นี้เป็นงานวิเคราะห์ข้อมูลที่ทำเพื่อฝึกตอบคำถามทางธุรกิจด้วย Python, SQL และ Power BI โดยใช้ข้อมูลลูกค้าประกันสุขภาพเพื่อดูว่าลูกค้ากลุ่มใดสนใจประกันรถยนต์ และควรเริ่มทดลองเสนอผลิตภัณฑ์กับกลุ่มใด
+This is a practice project. I used Python, SQL and Power BI to answer business questions with customer data from a health insurance company. The goal is to see which customers are interested in car insurance, and which group to test first.
 
-## คำถามที่ต้องการตอบ
+![Dashboard overview page](dashboard_overview.png)
 
-- ลูกค้าลักษณะใดมีอัตราตอบรับสูงกว่าภาพรวม?
-- ช่องทางขายที่มีผู้สนใจจำนวนมาก มีอัตราตอบรับสูงด้วยมั้ย?
-- หากเริ่มแคมเปญขนาดเล็ก ควรทดลองกับลูกค้ากลุ่มไหนก่อน?
+## Questions
 
-## ข้อมูลที่ใช้และความหมายของตัวเลข
+- Which customers respond more than average?
+- Do sales channels with many interested customers also have a high response rate?
+- If we start a small campaign, which group should we try first?
 
-ใช้ไฟล์ `train.csv` จำนวน **381,109 รายการ** จากชุดข้อมูล [Health Insurance Cross Sell Prediction บน Kaggle](https://www.kaggle.com/datasets/anmolkumar/health-insurance-cross-sell-prediction)
+## Data and what the numbers mean
 
-- `response = 1` คือลูกค้าที่สนใจประกันรถยนต์ และ `response = 0` คือไม่สนใจประกันรถยนต์
-- **Response rate** = จำนวนรายการที่ `response = 1` ÷ จำนวนรายการทั้งหมดในกลุ่มนั้น
-- ตัวเลขนี้แสดงความสนใจ ไม่ได้ยืนยันว่าลูกค้าซื้อประกันจริงหรือสร้างรายได้จากการขาย
+I used `train.csv` (381,109 rows) from the [Health Insurance Cross Sell Prediction](https://www.kaggle.com/datasets/anmolkumar/health-insurance-cross-sell-prediction) dataset on Kaggle.
 
-## ขั้นตอนการทำงาน
+- `response = 1` means the customer is interested in car insurance. `response = 0` means not interested.
+- Response rate = rows with `response = 1` divided by all rows in that group.
+- The number shows interest only. It does not show that a customer bought the insurance or that any sales were made.
 
-1. **สำรวจข้อมูลด้วย Python (`data.ipynb`)** — ดาวน์โหลดชุดข้อมูลจาก Kaggle ดูโครงสร้างคอลัมน์ ข้อมูลซ้ำ หมวดหมู่ และช่วงของตัวแปร รวมถึงปรับชื่อคอลัมน์และชนิดข้อมูลของรหัสภูมิภาคกับช่องทางขาย
-2. **วิเคราะห์ด้วย PostgreSQL (`sql.sql`)** — นำ `train.csv` เข้าตาราง `data` จากนั้นสร้าง `age_band` และ `vintage_band` เพื่อเปรียบเทียบจำนวนลูกค้าและ response rate ตามกลุ่มต่าง ๆ การจัดอันดับช่องทางขายตามอัตราตอบรับพิจารณาเฉพาะช่องทางที่มีลูกค้าอย่างน้อย 500 ราย
-3. **นำเสนอด้วย Power BI (`Dashborad.pbix`)** — ทำDashborad 3 หน้า ได้แก่ Overview, Customer Segment และ Cross-sell Targeting พร้อมตัวกรองและข้อเสนอสำหรับกลุ่มทดลอง
+## Steps
 
-## ผลที่พบ
+1. **Explore the data with Python** (`data.ipynb`): download the data from Kaggle. Check the columns, duplicate rows, categories and value ranges. Clean the column names and fix the data types of region code and sales channel code.
+2. **Analyze with PostgreSQL** (`sql.sql`): load `train.csv` into a table named `data`. Create `age_band` and `vintage_band`. Compare customer counts and response rates across groups. Sales channels are ranked by response rate only if they have at least 500 customers.
+3. **Present with Power BI** (`Dashborad.pbix`): a dashboard with 3 pages (Overview, Customer Segment and Cross-sell Targeting). It has filters and a suggested group for a test campaign.
 
-- ลูกค้าสนใจประกันรถยนต์ **46,710 จาก 381,109 รายการ** หรือ **12.26%** ของข้อมูลทั้งหมด
-- กลุ่มที่มีประวัติรถเสียหายมี response rate **23.77%** เทียบกับ **0.52%** ในกลุ่มที่ไม่มีประวัติรถเสียหาย ส่วนกลุ่มที่มีประกันรถยนต์อยู่แล้วมี response rate **0.09%** เทียบกับ **22.55%** ในกลุ่มที่ยังไม่มี
-- ช่องทางขาย 5 อันดับแรกเมื่อจัดตาม *จำนวนผู้สนใจ* รวมกันคิดเป็น **81.00%** ของผู้สนใจทั้งหมด จึงควรดูทั้งจำนวนผู้สนใจและอัตราตอบรับประกอบกันก่อนเลือกช่องทาง
+## Findings
 
-### ข้อเสนอสำหรับการทดลองแคมเปญ
+- 46,710 of 381,109 customers are interested in car insurance. That is 12.26%.
+- Customers with past vehicle damage have a 23.77% response rate, compared with 0.52% for customers with no damage. Customers who already have car insurance have a 0.09% response rate, compared with 22.55% for customers who do not.
+- The top 5 sales channels by number of interested customers hold 81.00% of all interested customers. So look at both the number of interested customers and the response rate before choosing a channel.
 
-กลุ่มที่น่าทดลองก่อนคือ **ลูกค้าอายุ 36–55 ปี ที่ยังไม่มีประกันรถยนต์ เคยมีประวัติรถเสียหาย และใช้รถอายุมากกว่า 2 ปี** ในข้อมูลชุดนี้มีกลุ่มดังกล่าว **8,435 รายการ** โดย **2,914 รายการ** ที่แสดงความสนใจ คิดเป็น response rate **34.55%** เทียบกับ **12.26%** ของภาพรวม
+## Suggested test campaign
 
-ภายในกลุ่มนี้ ช่องทางขายรหัส **26** มีลูกค้า **3,716 รายการ** และมีผู้สนใจ **1,615 รายการ** หรือ **43.46%** เป็นอีกทางเลือกสำหรับการทดลอง ทั้งสองอัตราเป็นค่าที่สังเกตจากข้อมูลเดิม ควรทดลองแคมเปญและวัดผลจริงก่อนค่อยขยายไปยังกลุ่มลูกค้ากลุ่มใหญ่
+Try this group first: customers aged 36-55, with no car insurance, with past vehicle damage, and with a vehicle older than 2 years. There are 8,435 rows in this group. 2,914 of them are interested. The response rate is 34.55%, compared with 12.26% overall.
 
-## ไฟล์หลัก
+Within this group, sales channel 26 has 3,716 customers and 1,615 interested ones (43.46%). It is another option for a test. Both rates come from the existing data, so run a real campaign and measure the results before using them on a larger group.
 
-- `data.ipynb` — โหลดและสำรวจข้อมูลเบื้องต้น
-- `sql.sql` — สร้างกลุ่มข้อมูลและวิเคราะห์คำถามทางธุรกิจ
-- `Dashborad.pbix` — interactive dashborad power bi
+## Main files
 
-## ข้อจำกัด
+- `data.ipynb`: load and explore the data
+- `sql.sql`: create groups and answer the business questions
+- `Dashborad.pbix`: interactive Power BI dashboard
 
-ข้อมูลนี้บอกได้เพียงว่าลูกค้าแสดงความสนใจหรือไม่ แต่ยืนยันการซื้อจริงหรือรายได้จากการขายไม่ได้ ผลวิเคราะห์จึงใช้เป็นแนวทางเลือกกลุ่มทดลอง และควรวัดผลจากแคมเปญจริงก่อนนำไปใช้กับลูกค้ากลุ่มใหญ่
+## Limits
 
-
+The data only shows whether a customer was interested. It cannot confirm real purchases or sales revenue. Use the results as a guide for picking a test group, and measure a real campaign first.
